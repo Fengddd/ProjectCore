@@ -104,9 +104,10 @@ namespace ConferenceWebApi
 
             app.UseAuthentication();
 
-            //Exceptionless日志
-            ExceptionlessClient.Default.Configuration.ApiKey = Configuration.GetSection("Exceptionless:ApiKey").Value;
-            ExceptionlessClient.Default.Configuration.ServerUrl = Configuration.GetSection("Exceptionless:ServerUrl").Value;
+            //ExceptionLess日志
+            ExceptionlessClient.Default.Configuration.ApiKey = Configuration.GetSection("ExceptionLess:ApiKey").Value;
+            ExceptionlessClient.Default.Configuration.ServerUrl = Configuration.GetSection("ExceptionLess:ServerUrl").Value;
+
             app.UseExceptionless();
 
             app.UseMvc();
