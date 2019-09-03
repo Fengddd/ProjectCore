@@ -1,0 +1,46 @@
+﻿using System.Collections.Generic;
+using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Swashbuckle.AspNetCore.Swagger;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+namespace ConferenceWebApi.Filter
+{
+    /// <summary>
+    /// HTTP请求过滤器（swagger）
+    /// </summary>
+    public class HttpHeaderFilter : IOperationFilter
+    {
+        /// <summary>
+        /// Apply
+        /// </summary>
+        /// <param name="operation"></param>
+        /// <param name="context"></param>
+        public void Apply(Operation operation, OperationFilterContext context)
+        {
+            if (operation.Parameters == null) operation.Parameters = new List<IParameter>();
+
+            var attrs = context.ApiDescription.ActionDescriptor.AttributeRouteInfo;
+
+            //先判断是否是匿名访问,
+            if (context.ApiDescription.ActionDescriptor is ControllerActionDescriptor descriptor)
+            {
+                var actionAttributes = descriptor.MethodInfo.GetCustomAttributes(inherit: true);
+                bool isAnonymous = actionAttributes.Any(a => a is AllowAnonymousAttribute);
+                //非匿名的方法,链接中添加AllowAnonymous值
+                if (!isAnonymous)
+                {
+                    operation.Parameters.Add(new NonBodyParameter()
+                    {
+                        Name = "Authorization",
+                        In = "header", //query header body path formData
+                        Type = "string",
+                        Required = false //是否必选
+                    });
+                }              
+            }
+
+        }
+    }
+}

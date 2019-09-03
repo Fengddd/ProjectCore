@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="DotNetCore.CAP" Version="2.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Conference.Command\Conference.Command.csproj" />
+    <ProjectReference Include="..\Conference.RepositoryInterface\Conference.RepositoryInterface.csproj" />
+  </ItemGroup>
+
+</Project>
