@@ -41,33 +41,33 @@ namespace ConferenceWebApi.Filter
         /// <param name="filterContext"></param>
         public override void OnActionExecuting(ActionExecutingContext filterContext)
         {
-            //开始_stopWatch
-            _stopWatch.Start();
-            //获取控制器名称
-            var controllerName = filterContext.RouteData.Values["controller"].ToString();
-            //获取Action名称
-            var actionName = filterContext.RouteData.Values["action"].ToString();
-            //获取控制器参数
-            var actionParameters = filterContext.ActionArguments;
-            var paraStr = "";
-            if (actionParameters.Count > 0)
-            {
-                var actionParameKey = actionParameters.Keys;
-                var actionParaList = actionParameters.Values.ToList();
-                foreach (var item in actionParaList)
-                {
-                    paraStr += JsonConvert.SerializeObject(item) + " ";
-                }
-            }
-            _monitorLog.MonitorLogId = Guid.NewGuid();
-            _monitorLog.ControllerName = controllerName;
-            _monitorLog.ActionName = actionName;
-            _monitorLog.RequestParameters = paraStr;
-            _monitorLog.ExecuteStartTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ffff",
-            (IFormatProvider)DateTimeFormatInfo.InvariantInfo));
-            _monitorLog.AddressIp = GetAddressIp();
-            _monitorLog.UserId = Guid.NewGuid();
-            _monitorLog.UserName = "Admin";
+            ////开始_stopWatch
+            //_stopWatch.Start();
+            ////获取控制器名称
+            //var controllerName = filterContext.RouteData.Values["controller"].ToString();
+            ////获取Action名称
+            //var actionName = filterContext.RouteData.Values["action"].ToString();
+            ////获取控制器参数
+            //var actionParameters = filterContext.ActionArguments;
+            //var paraStr = "";
+            //if (actionParameters.Count > 0)
+            //{
+            //    var actionParameKey = actionParameters.Keys;
+            //    var actionParaList = actionParameters.Values.ToList();
+            //    foreach (var item in actionParaList)
+            //    {
+            //        paraStr += JsonConvert.SerializeObject(item) + " ";
+            //    }
+            //}
+            //_monitorLog.MonitorLogId = Guid.NewGuid();
+            //_monitorLog.ControllerName = controllerName;
+            //_monitorLog.ActionName = actionName;
+            //_monitorLog.RequestParameters = paraStr;
+            //_monitorLog.ExecuteStartTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ffff",
+            //(IFormatProvider)DateTimeFormatInfo.InvariantInfo));
+            //_monitorLog.AddressIp = GetAddressIp();
+            //_monitorLog.UserId = Guid.NewGuid();
+            //_monitorLog.UserName = "Admin";
         }
 
         /// <summary>
@@ -76,22 +76,22 @@ namespace ConferenceWebApi.Filter
         /// <param name="filterContext"></param>
         public override void OnActionExecuted(ActionExecutedContext filterContext)
         {
-            _stopWatch.Stop();
-            var logType = (int)LogType.OperationLog;
-            var logLevel = (int)LogLevel.Write;
-            _monitorLog.ExecuteEndTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ffff",
-                    (IFormatProvider)DateTimeFormatInfo.InvariantInfo));
-            _monitorLog.ExecutionTime = _stopWatch.ElapsedMilliseconds;
-            if (filterContext.Exception != null)
-            {
-                _monitorLog.ErrorMsg = filterContext.Exception.Message;
-                logType = (int)LogType.ExceptionLog;
-                logLevel = (int)LogLevel.Error;
-            }
-            _monitorLog.LogType = logType;
-            _monitorLog.LogLevel = logLevel;
-            //记录日志数据到数据库
-            InsertBusLogs(_monitorLog);
+            //_stopWatch.Stop();
+            //var logType = (int)LogType.OperationLog;
+            //var logLevel = (int)LogLevel.Write;
+            //_monitorLog.ExecuteEndTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ffff",
+            //        (IFormatProvider)DateTimeFormatInfo.InvariantInfo));
+            //_monitorLog.ExecutionTime = _stopWatch.ElapsedMilliseconds;
+            //if (filterContext.Exception != null)
+            //{
+            //    _monitorLog.ErrorMsg = filterContext.Exception.Message;
+            //    logType = (int)LogType.ExceptionLog;
+            //    logLevel = (int)LogLevel.Error;
+            //}
+            //_monitorLog.LogType = logType;
+            //_monitorLog.LogLevel = logLevel;
+            ////记录日志数据到数据库
+            //InsertBusLogs(_monitorLog);
         }
 
         /// <summary>
