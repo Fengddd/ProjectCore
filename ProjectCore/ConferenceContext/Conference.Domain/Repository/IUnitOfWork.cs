@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Conference.Common.Interface
+namespace Conference.Domain.Repository
 {
     public interface IUnitOfWork
     {

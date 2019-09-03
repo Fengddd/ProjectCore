@@ -5,17 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 using ProjectCore.Application.AppUser.Dto;
-using ProjectCore.Domain.DomainService;
 using ProjectCore.Domain.Model.ValueObject;
-using System.Threading;
-using System.Transactions;
-using Microsoft.EntityFrameworkCore;
-using ProjectCore.Common.RedisHelper;
-using ProjectCore.EntityFrameworkCore;
-using RoleInfo = ProjectCore.Domain.Model.Entity.RoleInfo;
 
 namespace ProjectCore.Application.AppUser
 {

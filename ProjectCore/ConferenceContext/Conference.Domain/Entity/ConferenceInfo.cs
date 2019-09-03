@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Conference.Domain.Event;
-using Conference.Domain.Impl;
+using Conference.Domain.DomainEvent;
 
 namespace Conference.Domain.Entity
 {

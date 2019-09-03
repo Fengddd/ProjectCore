@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Conference.Domain.Entity;
-using Conference.EntityFrameworkCore;
-using Conference.RepositoryInterface;
+using Conference.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
-using Z.EntityFramework.Plus;
 
-namespace Conference.RepositoryImpl
+namespace Conference.EntityFrameworkCore.RepositoryImpl
 {
     /// <summary>
     /// 会议仓储
@@ -27,7 +22,7 @@ namespace Conference.RepositoryImpl
         /// </summary>
         /// <returns></returns>
         public async Task SaveConference(ConferenceInfo input)
-        {
+        {           
             await _conferenceContext.ConferenceInfo.AddAsync(input);
         }
 

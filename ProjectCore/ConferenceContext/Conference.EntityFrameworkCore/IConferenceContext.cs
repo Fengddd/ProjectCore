@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 
-namespace Conference.Common.Interface
+namespace Conference.EntityFrameworkCore
 {
     public interface IConferenceContext
     {

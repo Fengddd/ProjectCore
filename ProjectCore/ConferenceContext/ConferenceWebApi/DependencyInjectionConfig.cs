@@ -3,7 +3,6 @@ using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
 using Conference.Common;
 using Conference.Domain;
-using Conference.Domain.Impl;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

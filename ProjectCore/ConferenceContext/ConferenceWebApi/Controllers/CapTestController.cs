@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Conference.Common;
 using Conference.Domain;
 using Conference.Domain.Entity;
-using Conference.Domain.Impl;
 using DotNetCore.CAP;
 using Exceptionless;
 using Microsoft.AspNetCore.Http;
@@ -13,12 +12,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ConferenceWebApi.Controllers
 {
+    /// <summary>
+    /// CAP测试控制器
+    /// </summary>
     [Route("api/[controller]/[Action]")]
     [ApiController]
     public class CapTestController : ControllerBase
     {
         private readonly ICapPublisher _capBus;
         private readonly IPublishDomainEventService _publishDomainEvent;
+        /// <summary>
+        /// CAP测试
+        /// </summary>
+        /// <param name="capBus"></param>
+        /// <param name="publishDomainEvent"></param>
         public CapTestController(ICapPublisher capBus, IPublishDomainEventService publishDomainEvent)
         {
             _capBus = capBus;
@@ -62,17 +69,5 @@ namespace ConferenceWebApi.Controllers
        
         }
 
-    }
-
-    public class Demo
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public Demo1 Demo1 { get; set; }
-    }
-    public class Demo1
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
+    }  
 }

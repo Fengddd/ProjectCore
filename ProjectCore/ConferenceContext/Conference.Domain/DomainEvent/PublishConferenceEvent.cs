@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Conference.Domain.Impl;
-
-namespace Conference.Domain.Event
+﻿namespace Conference.Domain.DomainEvent
 {
     public class PublishConferenceEvent : DomainEvent
     {

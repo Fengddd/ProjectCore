@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ProjectCore.Domain.Model.Entity;
 
+
 namespace ProjectCore.Domain.Repository.Interfaces
 {
     public interface IOrderRepository:IBaseRepository<Order>

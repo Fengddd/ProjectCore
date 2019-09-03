@@ -18,14 +18,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using Microsoft.IdentityModel.Tokens;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Serialization;
-using RabbitMQ.Client;
-using Swashbuckle.AspNetCore.Swagger;
-using DotNetCore.CAP;
 using Exceptionless;
 
 namespace ConferenceWebApi

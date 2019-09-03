@@ -3,13 +3,13 @@ using System.Data;
 using System.Threading.Tasks;
 using Conference.Common;
 using Conference.Common.Dapper;
+using Conference.Domain.DomainEvent;
 using Conference.Domain.Entity;
-using Conference.Domain.Event;
-using Conference.RepositoryInterface;
+using Conference.Domain.Repository;
 using Dapper;
 using DotNetCore.CAP;
 
-namespace Conference.ApplicationEventHandler
+namespace Conference.QueryService.EventHandler
 {
     /// <summary>
     /// 会议EventHandler
@@ -36,9 +36,17 @@ namespace Conference.ApplicationEventHandler
         [CapSubscribe(nameof(CreateConferenceEvent), Group = nameof(CreateConferenceEvent))]
         public async Task HandleAsync(CreateConferenceEvent input)
         {
-            var conferenceInfo = input.CreateConferenceInfo.MapTo<CreateConference, ConferenceInfo>();
-            await _conferenceRepository.SaveConference(conferenceInfo);
-            await _conferenceRepository.CommitAsync();
+            try
+            {
+                var conferenceInfo = input.CreateConferenceInfo.MapTo<CreateConference, ConferenceInfo>();
+                await _conferenceRepository.SaveConference(conferenceInfo);
+                await _conferenceRepository.CommitAsync();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
 
         /// <summary>

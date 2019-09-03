@@ -67,7 +67,6 @@ namespace Conference.Common
         public async Task PublishEventAsync<TAggregationRoot>(TAggregationRoot @event) where TAggregationRoot : IAggregationRoot
         {
             var domainEventList = @event.UncommittedEvents.ToList();
-            var eventStorageList = new List<EventStorage>();
             TryDapperConnection();
             using (var transaction = _connection.BeginTransaction())
             {
@@ -84,12 +83,11 @@ namespace Conference.Common
                             Version = domainEvent.Version,
                             EventData = JsonConvert.SerializeObject(domainEvent)
                         };
-                        eventStorageList.Add(eventStorage);
+                        var eventStorageSql = $"INSERT INTO EventStorageInfo(Id,AggregateRootId,AggregateRootType,CreateDateTime,Version,EventData) VALUES (@Id,@AggregateRootId,@AggregateRootType,@CreateDateTime,@Version,@EventData)";
+                        await _connection.ExecuteAsync(eventStorageSql, eventStorage, transaction);
                         await _capPublisher.PublishAsync(domainEvent.GetRoutingKey(), domainEvent);
                     }
                 }
-                var eventStorageSql = $"INSERT INTO EventStorageInfo(Id,AggregateRootId,AggregateRootType,CreateDateTime,Version,EventData) VALUES (@Id,@AggregateRootId,@AggregateRootType,@CreateDateTime,@Version,@EventData)";
-                await _connection.ExecuteAsync(eventStorageSql, eventStorageList, transaction);
                 transaction.Commit();
                 _connection.Close();
                 @event.ClearEvents();

@@ -32,8 +32,10 @@ namespace ProjectCore.Common.Event
              
                 //storage.CreateDateTime = ceshiEvent.CreateDateTime;
 
-                //await new EventStorage().EventStorageSava(storage);
+                //await new EventStorage().EventStorageSava("");
                Debug.Write("ddd");
+               await Task.CompletedTask;
+
             }
             catch (Exception e)
             {

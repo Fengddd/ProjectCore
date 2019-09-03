@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Conference.Domain.Impl
+namespace Conference.Domain.DomainEvent
 {
     /// <summary>
     /// 领域事件

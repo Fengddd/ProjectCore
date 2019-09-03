@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 using Conference.Domain;
-using Conference.DomainService;
+using Conference.Domain.DomainService;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Conference.Common.IocHelper

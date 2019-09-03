@@ -1,16 +1,11 @@
 ﻿using Autofac;
 using Autofac.Configuration;
 using Autofac.Extensions.DependencyInjection;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProjectCore.Common.IocHelper;
-using ProjectCore.Domain.DomainService;
-using ProjectCore.Domain.Repository.Interfaces;
 using ProjectCore.EntityFrameworkCore;
-using ProjectCore.Infrastructure.Repository;
-using ProjectCore.WebApi.Filter;
+
 
 namespace ProjectCore.WebApi
 {

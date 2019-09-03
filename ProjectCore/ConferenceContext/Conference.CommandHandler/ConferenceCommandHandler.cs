@@ -7,7 +7,7 @@ using Conference.Common.Log;
 using DotNetCore.CAP;
 using Conference.Domain.Entity;
 using Conference.Domain;
-using Conference.RepositoryInterface;
+using Conference.Domain.Repository;
 using Exceptionless;
 
 namespace Conference.CommandHandler

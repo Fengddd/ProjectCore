@@ -1,4 +1,5 @@
-﻿using Conference.Common;
+﻿
+using Conference.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 

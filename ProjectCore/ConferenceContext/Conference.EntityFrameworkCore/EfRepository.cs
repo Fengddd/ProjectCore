@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Threading;
 using System.Threading.Tasks;
-using Conference.Common.Interface;
+using Conference.Domain.Repository;
 
 namespace Conference.EntityFrameworkCore
 {
     public class EfRepository : IRepository
     {
-        private readonly ConferenceContext _dbContext;
+        private readonly IConferenceContext _dbContext;
         public EfRepository(ConferenceContext dbContext)
         {
             _dbContext = dbContext;

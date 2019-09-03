@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using Conference.Domain.Entity;
 
-namespace Conference.RepositoryInterface
+namespace Conference.Domain.Repository
 {
     /// <summary>
     /// 会议仓储

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
-using Conference.ApplicationEventHandler;
 using Conference.Command;
 using Conference.CommandHandler;
 using Conference.Common;
@@ -12,12 +8,10 @@ using Conference.Common.Log;
 using Conference.Domain;
 using Conference.EntityFrameworkCore;
 using Conference.QueryService;
-using Conference.RepositoryImpl;
-using Conference.RepositoryInterface;
+using Conference.QueryService.EventHandler;
 using ConferenceWebApi.Filter;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -185,7 +179,7 @@ namespace ConferenceWebApi
             _services.AddScoped<IConferenceQueryService, ConferenceQueryService>();
             //通过反射进行依赖注入不能为空
             //注入仓储
-            _services.RegisterAssembly("Conference.RepositoryInterface", "Conference.RepositoryImpl");
+            _services.RegisterAssembly("Conference.Domain", "Conference.EntityFrameworkCore");
             ////注入领域服务
             //_services.RegisterDomainServiceAssembly("Conference.DomainService");
             //services.RegisterAssembly("ProjectCore.Domain.DomainService");

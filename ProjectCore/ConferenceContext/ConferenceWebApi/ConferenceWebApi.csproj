@@ -35,15 +35,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Conference.ApplicationEventHandler\Conference.ApplicationEventHandler.csproj" />
     <ProjectReference Include="..\Conference.CommandHandler\Conference.CommandHandler.csproj" />
     <ProjectReference Include="..\Conference.Command\Conference.Command.csproj" />
     <ProjectReference Include="..\Conference.Common\Conference.Common.csproj" />
     <ProjectReference Include="..\Conference.Domain\Conference.Domain.csproj" />
     <ProjectReference Include="..\Conference.EntityFrameworkCore\Conference.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\Conference.QueryService\Conference.QueryService.csproj" />
-    <ProjectReference Include="..\Conference.RepositoryImpl\Conference.RepositoryImpl.csproj" />
-    <ProjectReference Include="..\Conference.RepositoryInterface\Conference.RepositoryInterface.csproj" />
   </ItemGroup>
 
 </Project>

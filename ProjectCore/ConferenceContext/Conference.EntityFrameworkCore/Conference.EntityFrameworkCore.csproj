@@ -7,10 +7,12 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.1.0" />
+    <PackageReference Include="Z.EntityFramework.Plus.EFCore" Version="2.0.7" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Conference.Common\Conference.Common.csproj" />
+    <ProjectReference Include="..\Conference.Domain\Conference.Domain.csproj" />
   </ItemGroup>
 
 </Project>

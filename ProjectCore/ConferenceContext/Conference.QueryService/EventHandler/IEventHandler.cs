@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace Conference.ApplicationEventHandler
+namespace Conference.QueryService.EventHandler
 {
     /// <summary>
     /// 处理事件

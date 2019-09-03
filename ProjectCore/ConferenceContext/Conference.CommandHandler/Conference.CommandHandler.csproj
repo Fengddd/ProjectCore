@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Conference.Command\Conference.Command.csproj" />
-    <ProjectReference Include="..\Conference.RepositoryInterface\Conference.RepositoryInterface.csproj" />
   </ItemGroup>
 
 </Project>

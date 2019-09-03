@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Linq.Expressions;
-using Conference.Common;
-using Conference.Common.Interface;
 using Conference.Common.Log;
 using Conference.Domain;
 using Conference.Domain.Entity;
@@ -60,11 +58,11 @@ namespace Conference.EntityFrameworkCore
 
             modelBuilder.Entity<Customer>().ToTable("CustomerInfo").HasKey(e => e.Id);
             modelBuilder.Entity<Customer>().OwnsOne(e => e.CustomerAddress);
-
+       
             modelBuilder.Entity<ConferenceInfo>().ToTable("ConferenceInfo").HasKey(e => e.Id);
             modelBuilder.Entity<ConferenceInfo>().HasMany(e => e.SeatTypeList).WithOne(e => e.ConferenceInfo)
                 .HasForeignKey(e => e.ConferenceId);
-
+            modelBuilder.Entity<ConferenceInfo>().Ignore(e => e.Version);
 
             modelBuilder.Entity<SeatType>().ToTable("SeatTypeInfo").HasKey(e => e.Id);
             modelBuilder.Entity<SeatType>().HasMany(e => e.SeatList).WithOne(e => e.SeatTypeInfo)

@@ -1,14 +1,13 @@
-﻿using Conference.EntityFrameworkCore;
-using Conference.RepositoryInterface;
-using Microsoft.EntityFrameworkCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Conference.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using Z.EntityFramework.Plus;
 
-namespace Conference.RepositoryImpl
+namespace Conference.EntityFrameworkCore
 {
     /// <summary>
     /// 仓储基类中定义的公共的方法
@@ -16,7 +15,7 @@ namespace Conference.RepositoryImpl
     /// <typeparam name="T"></typeparam>
     public class BaseRepository<T> : EfRepository, IBaseRepository<T> where T : class , new()
     {
-        public readonly ConferenceContext DbContext;
+        public readonly IConferenceContext DbContext;
         public BaseRepository(ConferenceContext conferenceContext) : base(conferenceContext)
         {
             DbContext = conferenceContext;
@@ -498,8 +497,7 @@ namespace Conference.RepositoryImpl
         }
 
         #endregion
-
-      
+    
         public void SqlMasterSlaveConn()
         {
             //var connection = JsonConfigurationHelper.GetAppSettings<ConnectionService>("appsettings.json", "ConnectionService");

@@ -1,10 +1,9 @@
-﻿using Conference.Common.Interface;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
-namespace Conference.RepositoryInterface
+namespace Conference.Domain.Repository
 {
     /// <summary>
     /// 仓储基类中定义的公共的方法

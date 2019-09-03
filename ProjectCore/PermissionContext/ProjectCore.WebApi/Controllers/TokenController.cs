@@ -65,16 +65,15 @@ namespace ProjectCore.WebApi.Controllers
         //[AllowAnonymous]      
         public void PublishTestQueue()
         {
-            //_capBus.Publish("services.show.time", new CeshiEvent("CeshiEvent"));
-            //_capBus.Publish("services.show.time.one", new CeshiEvent("CeshiEventOne"));
-            //_capBus.Publish("dddddddd", new CeshiEvent("CeshiEventOne"));
+            _capBus.Publish("services.show.time","测试");
+       
         }
 
         /// <summary>
         /// 订阅
         /// </summary>
         [HttpPost]
-        //[CapSubscribe("services.show.time", Group= "Group")]
+        [CapSubscribe("services.show.time", Group= "Group")]
         public void GetTestQueue(CeshiEvent ce)
         {
             

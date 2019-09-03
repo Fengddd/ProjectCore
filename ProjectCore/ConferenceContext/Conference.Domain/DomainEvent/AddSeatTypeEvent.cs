@@ -1,10 +1,7 @@
-﻿using Conference.Domain.Impl;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 using Conference.Domain.Entity;
 
-namespace Conference.Domain.Event
+namespace Conference.Domain.DomainEvent
 {
     public class AddSeatTypeEvent : DomainEvent
     {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using Exceptionless.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Logging;
@@ -12,6 +13,7 @@ using ProjectCore.Common.Event;
 using ProjectCore.Common.Log;
 using ProjectCore.Domain.Model.Entity;
 using ProjectCore.EntityFrameworkCore.Mapping;
+using StackExchange.Redis;
 
 namespace ProjectCore.EntityFrameworkCore
 {
@@ -39,7 +41,7 @@ namespace ProjectCore.EntityFrameworkCore
         /// <summary>
         /// 用户
         /// </summary>
-        public DbSet<UserInfo> UserInfo { get; set; }   
+        public DbSet<Domain.Model.Entity.UserInfo> UserInfo { get; set; }   
         /// <summary>
         /// 用户组
         /// </summary>
@@ -63,7 +65,7 @@ namespace ProjectCore.EntityFrameworkCore
 
         #region 购物车
         public DbSet<Customer> CustomerInfo { get; set; }
-        public DbSet<Order> OrderInfo { get; set; }
+        public DbSet<Domain.Model.Entity.Order> OrderInfo { get; set; }
         public DbSet<OrderDetails> OrderDetailInfo { get; set; }
         public DbSet<Product> ProductInfo { get; set; }
         public DbSet<ShoppingCart> ShoppingCartInfo { get; set; }
@@ -84,7 +86,7 @@ namespace ProjectCore.EntityFrameworkCore
             //    .HasForeignKey(p => p.RoleId);
             //modelBuilder.Entity<RoleMenuInfo>().HasOne(e => e.MenuInfo).WithMany(e => e.RoleMenuList)
             //    .HasForeignKey(p => p.MenuId);
-            modelBuilder.ApplyConfiguration<UserInfo>(new UserMap());         
+            modelBuilder.ApplyConfiguration<Domain.Model.Entity.UserInfo>(new UserMap());         
             //设置软删除
             foreach (var entityType in modelBuilder.Model.GetEntityTypes())
             {           
