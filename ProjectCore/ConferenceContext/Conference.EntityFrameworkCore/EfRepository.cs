@@ -2,13 +2,15 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Conference.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Conference.EntityFrameworkCore
 {
-    public class EfRepository : IRepository
+    public class EfRepository : DbContext, IRepository
     {
-        private readonly IConferenceContext _dbContext;
-        public EfRepository(ConferenceContext dbContext)
+        public readonly DbContext _dbContext;
+        public EfRepository(DbContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -16,7 +18,8 @@ namespace Conference.EntityFrameworkCore
         /// 提交
         /// </summary>
         public void Commit()
-        {          
+        {   
+            
            _dbContext.SaveChanges();        
         }
         /// <summary>
@@ -34,6 +37,29 @@ namespace Conference.EntityFrameworkCore
         {
             _dbContext.Dispose();
             GC.Collect();
+        }
+
+        /// <summary>
+        /// 保存更改前操作
+        /// </summary>
+        public virtual void SaveChangesBefore()
+        {
+            
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                switch (entry.State)
+                {
+                    case EntityState.Added:
+
+                        break;
+                    case EntityState.Modified:
+
+                        break;
+                    case EntityState.Deleted:
+
+                        break;
+                }
+            }
         }
     }
 }
