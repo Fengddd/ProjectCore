@@ -15,6 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using ProjectCore.Common.Log;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace ConferenceWebApi

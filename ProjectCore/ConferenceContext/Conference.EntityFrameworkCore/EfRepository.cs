@@ -7,10 +7,10 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Conference.EntityFrameworkCore
 {
-    public class EfRepository : DbContext, IRepository
+    public class EfRepository : IRepository
     {
-        public readonly DbContext _dbContext;
-        public EfRepository(DbContext dbContext)
+        private readonly ConferenceContext _dbContext;
+        public EfRepository(ConferenceContext dbContext)
         {
             _dbContext = dbContext;
         }
@@ -18,34 +18,35 @@ namespace Conference.EntityFrameworkCore
         /// 提交
         /// </summary>
         public void Commit()
-        {   
-            
-           _dbContext.SaveChanges();        
+        {
+            SaveChangesBefore();
+            _dbContext.SaveChanges();
         }
         /// <summary>
         /// 异步提交
         /// </summary>
         /// <returns></returns>
         public async Task CommitAsync()
-        {          
-             await _dbContext.SaveChangesAsync(CancellationToken.None);           
+        {
+            SaveChangesBefore();
+            await _dbContext.SaveChangesAsync(CancellationToken.None);
         }
         /// <summary>
         /// 内存回收
         /// </summary>
         public void Dispose()
         {
-            _dbContext.Dispose();
+            _dbContext.Dispose();            
             GC.Collect();
         }
 
         /// <summary>
-        /// 保存更改前操作
+        /// 保存更改前操作,可以记录日志数据
         /// </summary>
         public virtual void SaveChangesBefore()
         {
-            
-            foreach (var entry in ChangeTracker.Entries())
+
+            foreach (var entry in _dbContext.ChangeTracker.Entries())
             {
                 switch (entry.State)
                 {

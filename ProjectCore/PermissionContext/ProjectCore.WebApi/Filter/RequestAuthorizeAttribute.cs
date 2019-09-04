@@ -31,7 +31,8 @@ namespace ProjectCore.WebApi.Filter
                 //解析Token
                 var jwtSecurityToken = new JwtSecurityTokenHandler().ReadJwtToken(jwtStr);
                 var userId= jwtSecurityToken.Claims.FirstOrDefault(e => e.Type == "userId")?.Value;
-                var token= RedisHelper.GetStringKey(userId + "Token");
+                //var token= RedisHelper.GetStringKey(userId + "Token");
+                var token= "";
                 if (jwtStr != token) {
                     context.Result = new JsonResult(new HeaderResult<string>
                     {

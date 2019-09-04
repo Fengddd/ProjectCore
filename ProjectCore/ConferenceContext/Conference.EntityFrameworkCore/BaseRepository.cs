@@ -15,7 +15,7 @@ namespace Conference.EntityFrameworkCore
     /// <typeparam name="T"></typeparam>
     public class BaseRepository<T> : EfRepository, IBaseRepository<T> where T : class , new()
     {
-        public readonly IConferenceContext DbContext;
+        public readonly ConferenceContext DbContext;
         public BaseRepository(ConferenceContext conferenceContext) : base(conferenceContext)
         {
             DbContext = conferenceContext;

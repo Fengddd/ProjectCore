@@ -72,7 +72,7 @@ namespace ProjectCore.WebApi.Filter
         {
             _stopWatch.Stop();
             var logType = (int)LogType.OperationLog;
-            var logLevel = (int)LogLevel.Write;
+            var logLevel = (int)LogLevelEnum.Write;
             _monitorLog.ExecuteEndTime = Convert.ToDateTime(DateTime.Now.ToString("yyyy/MM/dd HH:mm:ss.ffff",
                     (IFormatProvider)DateTimeFormatInfo.InvariantInfo));
             _monitorLog.ExecutionTime = _stopWatch.ElapsedMilliseconds;
@@ -80,7 +80,7 @@ namespace ProjectCore.WebApi.Filter
             {
                 _monitorLog.ErrorMsg = filterContext.Exception.Message;
                 logType = (int)LogType.ExceptionLog;
-                logLevel = (int)LogLevel.Error;
+                logLevel = (int)LogLevelEnum.Error;
             }
             _monitorLog.LogType = logType;
             _monitorLog.LogLevel = logLevel;
