@@ -10,7 +10,7 @@ namespace Conference.Common.Redis
     /// <summary>
     /// CsRedis帮助类
     /// </summary>
-    public class CsRedisHelper
+    public class CsRedisHelper : IRedisHelper
     {
         private readonly CSRedisClient _redisClient;
         private readonly RedisOptions _redisOptions;
@@ -38,6 +38,7 @@ namespace Conference.Common.Redis
         {
             _redisOptions = redisOptions;
             _redisClient = new CSRedisClient(_redisOptions.ToString());
+            RedisHelper.Initialization(_redisClient);
             // 使用自定义方法序列化 -> 避免自循环
             CSRedisClient.Serialize = _jsonSerializer;
         }
@@ -50,14 +51,15 @@ namespace Conference.Common.Redis
         /// <param name="key">Redis Key</param>
         /// <param name="value">保存的值</param>
         /// <param name="expireSeconds">过期时间</param>
-        /// <returns></returns>
-        public static bool StringSet(string key, object value, int? expireSeconds = null)
+        /// <returns>Boolean</returns>
+        public bool StringSet(string key, object value, int? expireSeconds = null)
         {
             try
             {
                 return (expireSeconds == null) ?
                     RedisHelper.Set(key, value) :
                     RedisHelper.Set(key, value, expireSeconds.Value);
+
             }
             catch (Exception e)
             {
@@ -71,8 +73,8 @@ namespace Conference.Common.Redis
         /// <param name="key">Redis Key</param>
         /// <param name="value">保存的值</param>
         /// <param name="expireSeconds">过期时间</param>
-        /// <returns></returns>
-        public static async Task<bool> StringSetAsync(string key, object value, int? expireSeconds = null)
+        /// <returns>Boolean</returns>
+        public async Task<bool> StringSetAsync(string key, object value, int? expireSeconds = null)
         {
             try
             {
@@ -90,8 +92,8 @@ namespace Conference.Common.Redis
         /// 获取单个key的值
         /// </summary>
         /// <param name="key">Redis Key</param>
-        /// <returns></returns>
-        public static string GetString(string key)
+        /// <returns>String</returns>
+        public string GetString(string key)
         {
             try
             {
@@ -107,9 +109,9 @@ namespace Conference.Common.Redis
         /// 异步获取单个key的值
         /// </summary>
         /// <param name="key">Redis Key</param>
-        /// <returns></returns>
+        /// <returns>String</returns>
 
-        public static async Task<string> GetStringAsync(string key)
+        public async Task<string> GetStringAsync(string key)
         {
             try
             {
@@ -122,12 +124,12 @@ namespace Conference.Common.Redis
         }
 
         /// <summary>
-        /// 获取一个key的对象
+        /// 获取对象或集合
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
-        /// <returns></returns>
-        public static T GetString<T>(string key)
+        /// <returns>T</returns>
+        public T GetString<T>(string key)
         {
             try
             {
@@ -140,12 +142,12 @@ namespace Conference.Common.Redis
         }
 
         /// <summary>
-        /// 异步获取一个key的对象
+        /// 异步获取对象或集合
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key"></param>
-        /// <returns></returns>
-        public static async Task<T> GetStringAsync<T>(string key)
+        /// <returns>T</returns>
+        public async Task<T> GetStringAsync<T>(string key)
         {
             try
             {
@@ -157,40 +159,353 @@ namespace Conference.Common.Redis
             }
         }
 
+        /// <summary>
+        /// 删除 String
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>Boolean</returns>
+        public bool DeleteString(string key)
+        {
+            try
+            {
+                return RedisHelper.Del(key) > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 异步删除 String
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>Boolean</returns>
+        public async Task<bool> DeleteStringAsync(string key)
+        {
+            try
+            {
+                return await RedisHelper.DelAsync(key) > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 检查是否存在 String
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>Boolean</returns>
+        public bool ExistsStringKey(string key)
+        {
+            try
+            {
+                return RedisHelper.Exists(key);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 检查是否存在 String
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns>Boolean</returns>
+        public async Task<bool> ExistsStringKeyAsync(string key)
+        {
+            try
+            {
+                return await RedisHelper.ExistsAsync(key);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
 
         #endregion
 
         #region Hash
 
         /// <summary>
-        /// 保存一个集合
+        /// 保存一个对象  Hash
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="key">Redis Key</param>
-        /// <param name="list">数据集合</param>
-        /// <param name="getModelId">HashSet</param>
-        public static bool HashSet<T>(string key, List<T> list, Func<T, string> getModelId)
+        /// <param name="item">数据集合</param>
+        /// <param name="itemKey">HashSet</param>
+        public bool HashSetEntity<T>(string key, T item, Func<T, string> itemKey)
         {
             var isTrue = true;
             try
             {
-                foreach (var item in list)
-                {
-                    RedisHelper.HSet(key, getModelId(item), item);
-                }
+                RedisHelper.HSet(key, itemKey(item), item);
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 isTrue = false;
             }
             return isTrue;
         }
 
-        #endregion
-
+        /// <summary>
+        /// 异步保存一个对象  Hash
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">Redis Key</param>
+        /// <param name="item">数据集合</param>
+        /// <param name="itemKey">HashSet</param>
+        public async Task<bool> HashSetEntityAsync<T>(string key, T item, Func<T, string> itemKey)
+        {
+            var isTrue = true;
+            try
+            {
+                await RedisHelper.HSetAsync(key, itemKey(item), item);
+            }
+            catch (Exception e)
+            {
+                isTrue = false;
+            }
+            return isTrue;
+        }
 
         /// <summary>
-        /// 获取过滤数据集
+        /// 保存一个集合  Hash
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">Redis Key</param>
+        /// <param name="list">数据集合</param>
+        /// <param name="itemKey">HashSet</param>
+        public bool HashSetList<T>(string key, List<T> list, Func<T, string> itemKey)
+        {
+            var isTrue = true;
+            try
+            {
+                foreach (var item in list)
+                {
+                    RedisHelper.HSet(key, itemKey(item), item);
+                }
+            }
+            catch (Exception e)
+            {
+                isTrue = false;
+            }
+            return isTrue;
+        }
+
+        /// <summary>
+        /// 异步保存一个集合  Hash
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key">Redis Key</param>
+        /// <param name="list">数据集合</param>
+        /// <param name="itemKey">key</param>
+        public async Task<bool> HashSetListAsync<T>(string key, List<T> list, Func<T, string> itemKey)
+        {
+            var isTrue = true;
+            try
+            {
+                foreach (var item in list)
+                {
+                    var c = itemKey(item);
+                    await RedisHelper.HSetAsync(key, itemKey(item), item);
+                }
+            }
+            catch (Exception e)
+            {
+                isTrue = false;
+            }
+            return isTrue;
+        }
+
+        /// <summary>
+        /// 获取 Hash 集合或对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns>Dictionary</returns>
+        public Dictionary<string, T> GetAllHashDictionary<T>(string key)
+        {
+            try
+            {
+                return RedisHelper.HGetAll<T>(key);
+            }
+            catch (Exception e)
+            {
+                return default(Dictionary<string, T>);
+            }
+        }
+
+        /// <summary>
+        /// 异步获取 Hash 集合或对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <returns>Dictionary</returns>
+        public async Task<Dictionary<string, T>> GetAllHashDictionaryAsync<T>(string key)
+        {
+            try
+            {
+                return await RedisHelper.HGetAllAsync<T>(key);
+            }
+            catch (Exception e)
+            {
+                return default(Dictionary<string, T>);
+            }
+        }
+
+        /// <summary>
+        /// 获取 Hash 集合或对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="itemKey"></param>
+        /// <returns>T</returns>
+        public T GetHash<T>(string key, string itemKey)
+        {
+            try
+            {
+                return RedisHelper.HGet<T>(key, itemKey);
+            }
+            catch (Exception e)
+            {
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// 异步获取 Hash 集合或对象
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="key"></param>
+        /// <param name="itemKey"></param>
+        /// <returns>T</returns>
+        public async Task<T> GetHashAsync<T>(string key, string itemKey)
+        {
+            try
+            {
+                return await RedisHelper.HGetAsync<T>(key, itemKey);
+            }
+            catch (Exception e)
+            {
+                return default(T);
+            }
+        }
+
+        /// <summary>
+        /// 删除Hash
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public bool DeleteAllHash(string key)
+        {
+            try
+            {
+                return RedisHelper.HDel(key) > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 异步删除Hash
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteAllHashAsync(string key)
+        {
+            try
+            {
+                return await RedisHelper.HDelAsync(key) > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 删除Hash
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="itemKey"></param>
+        /// <returns></returns>
+        public bool DeleteHash(string key, string itemKey)
+        {
+            try
+            {
+                return RedisHelper.HDel(key, itemKey) > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 异步删除Hash
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="itemKey"></param>
+        /// <returns></returns>
+        public async Task<bool> DeleteHashAsync(string key, string itemKey)
+        {
+            try
+            {
+                return await RedisHelper.HDelAsync(key, itemKey) > 0;
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 检查是否存在 Hash
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="itemKey"></param>
+        /// <returns></returns>
+        public bool ExistsHashKey(string key, string itemKey)
+        {
+            try
+            {
+                return RedisHelper.HExists(key, itemKey);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// 检查是否存在 Hash
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="itemKey"></param>
+        /// <returns></returns>
+        public async Task<bool> ExistsHashKeyAsync(string key, string itemKey)
+        {
+            try
+            {
+                return await RedisHelper.HExistsAsync(key, itemKey);
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+        }
+
+        #endregion
+
+        /// <summary>
+        /// 获取过滤数据集(模糊匹配)
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="pattern">通配符</param>
@@ -211,7 +526,7 @@ namespace Conference.Common.Redis
         }
 
         /// <summary>
-        /// 异步获取过滤数据集
+        /// 异步获取过滤数据集(模糊匹配)
         /// </summary>
         /// <typeparam name="T">类型</typeparam>
         /// <param name="pattern">通配符</param>
@@ -336,6 +651,10 @@ namespace Conference.Common.Redis
             return RedisHelper.StartPipe();
         }
 
+        /// <summary>
+        /// 获取Redis配置
+        /// </summary>
+        /// <returns></returns>
         public RedisOptions GetRedisOptions()
         {
             return _redisOptions;

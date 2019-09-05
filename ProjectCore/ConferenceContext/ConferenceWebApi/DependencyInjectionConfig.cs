@@ -34,7 +34,8 @@ namespace ConferenceWebApi
                 .AddSwagger()
                 .AddCors()
                 .AddDddLayering()
-                .AddCap();
+                .AddCap()
+                .AddRedis();
 
             //AutoFac依赖注入 
             var builder = new ContainerBuilder();

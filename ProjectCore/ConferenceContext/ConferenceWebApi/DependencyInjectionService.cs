@@ -5,6 +5,7 @@ using Conference.CommandHandler;
 using Conference.Common;
 using Conference.Common.IocHelper;
 using Conference.Common.Log;
+using Conference.Common.Redis;
 using Conference.Domain;
 using Conference.EntityFrameworkCore;
 using Conference.QueryService;
@@ -13,6 +14,7 @@ using ConferenceWebApi.Filter;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using ProjectCore.Common.Log;
@@ -189,6 +191,28 @@ namespace ConferenceWebApi
             return _dependencyInjectionConfiguration;
         }
 
-
+        /// <summary>
+        /// 添加Redis
+        /// </summary>
+        /// <returns></returns>
+        public DependencyInjectionService AddRedis()
+        {
+            RedisOptions options = new RedisOptions
+            {
+                HostName = "127.0.0.1",
+                Port = 6379,
+                Password = "abcdefg123456",
+                DefaultDatabase = string.Empty,
+                WriteBuffer = 10240,
+                Prefix = string.Empty,
+                TryIt = 3,
+                PoolSize = 50,
+                SSL = false,
+                ExpireSeconds = 60,
+                EnvName = string.Empty
+            };            
+            _services.TryAddSingleton<IRedisHelper>(new CsRedisHelper(options));
+            return _dependencyInjectionConfiguration;
+        }
     }
 }
