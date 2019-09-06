@@ -48,7 +48,6 @@ namespace ProjectCore.Application.AppUser
             {
                 where = where.And(e => e.UserPhone.Contains(input.SearchPwd));
             }
-           
             var userList = await _userRepository.LoadEntityListAsync(where, e => e.UserName, "asc", input.PageIndex, input.Pagesize);
             var total = await _userRepository.GetEntitiesCountAsync(where);
             var userDtoList = userList.MapToList<UserInfo, UserDto>();

@@ -14,6 +14,7 @@ using ProjectCore.Common.Log;
 using ProjectCore.Domain.Model.Entity;
 using ProjectCore.EntityFrameworkCore.Mapping;
 using StackExchange.Redis;
+using UserInfo = ProjectCore.Domain.Model.Entity.UserInfo;
 
 namespace ProjectCore.EntityFrameworkCore
 {
@@ -41,7 +42,7 @@ namespace ProjectCore.EntityFrameworkCore
         /// <summary>
         /// 用户
         /// </summary>
-        public DbSet<Domain.Model.Entity.UserInfo> UserInfo { get; set; }   
+        public DbSet<UserInfo> UserInfo { get; set; }   
         /// <summary>
         /// 用户组
         /// </summary>

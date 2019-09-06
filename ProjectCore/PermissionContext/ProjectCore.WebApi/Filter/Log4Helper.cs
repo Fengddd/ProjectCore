@@ -84,7 +84,7 @@ namespace ProjectCore.WebApi.Filter
             }
             _monitorLog.LogType = logType;
             _monitorLog.LogLevel = logLevel;
-            InsertBusLogs(_monitorLog);
+            //InsertBusLogs(_monitorLog);
         }
 
         public void OnException(ExceptionContext filterContext)

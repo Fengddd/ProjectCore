@@ -1,21 +1,11 @@
 ﻿using System;
 using System.IO;
-using System.Text;
-using Autofac;
-using Autofac.Configuration;
-using Autofac.Core;
-using Autofac.Extensions.DependencyInjection;
-using AutoMapper.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using ProjectCore.Common;
 using ProjectCore.Common.Event;
 using ProjectCore.Common.IocHelper;
 using ProjectCore.Common.RabbitMqEvent;
@@ -25,6 +15,7 @@ using ProjectCore.Infrastructure.Repository;
 using ProjectCore.WebApi.Filter;
 using RabbitMQ.Client;
 using Swashbuckle.AspNetCore.Swagger;
+using WebApiClient;
 
 namespace ProjectCore.WebApi
 {
@@ -235,7 +226,7 @@ namespace ProjectCore.WebApi
             _services.RegisterAssembly("ProjectCore.Domain.Repository.Interfaces", "ProjectCore.Infrastructure.Repository");
             _services.RegisterAssembly("ProjectCore.Application");
             _services.RegisterDomainServiceAssembly("ProjectCore.Domain.DomainService");
-     
+
             return _dependencyInjectionConfiguration;
         }
 
@@ -259,6 +250,25 @@ namespace ProjectCore.WebApi
                     options.Audience = "identityServerApi";
 
                 });
+            return _dependencyInjectionConfiguration;
+        }
+
+        /// <summary>
+        /// 添加IdentityServer验证
+        /// </summary>
+        /// <returns></returns>
+        public DependencyInjectionService AddWebApiClient<T>() where T : class, IHttpApi
+        {
+            _services.AddHttpClient<T>().AddTypedClient<T>((client, p) =>
+            {
+                var httpApiConfig = new HttpApiConfig(client)
+                {
+                    HttpHost = new Uri("https://localhost:44376/"),
+                    LoggerFactory = p.GetRequiredService<ILoggerFactory>()
+                };
+                return HttpApi.Create<T>(httpApiConfig);
+
+            });
             return _dependencyInjectionConfiguration;
         }
 

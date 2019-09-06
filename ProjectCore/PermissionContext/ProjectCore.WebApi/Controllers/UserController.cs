@@ -30,7 +30,7 @@ namespace ProjectCore.WebApi.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpPost]
-        [Authorize]
+        //[Authorize]
         public async Task<HeaderResult<List<UserDto>>> GetUserList([FromBody]SearchUserDto input)
         {            
             return  await _userAppService.GetUserList(input);

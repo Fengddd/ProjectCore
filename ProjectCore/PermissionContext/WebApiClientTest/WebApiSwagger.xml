@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebApiClientTest</name>
+    </assembly>
+    <members>
+        <member name="T:WebApiClientTest.Controllers.WebApiClientBaseController">
+            <summary>
+            WebApiClientBase 基础
+            </summary>
+        </member>
+        <member name="M:WebApiClientTest.Controllers.WebApiClientBaseController.#ctor(WebApiClientTest.IWebApiClientBase)">
+            <summary>
+            构造
+            </summary>
+            <param name="webApiClientBase"></param>
+        </member>
+        <member name="M:WebApiClientTest.Controllers.WebApiClientBaseController.WebApiClientBaseAsync">
+            <summary>
+            WebApiClientBase
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiClientTest.Controllers.WebApiClientBaseController.WebApiClientBaseLocAsync">
+            <summary>
+            WebApiClientBaseLoc
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:WebApiClientTest.IWebApiClientBase.GetUserListAsync(ProjectCore.Application.AppUser.Dto.SearchUserDto)">
+            <summary>
+            获取用户列表
+            </summary>
+            <param name="input"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>
